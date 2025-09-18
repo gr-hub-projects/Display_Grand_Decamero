@@ -312,12 +312,16 @@ footer {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-/* --- Selector de idioma --- */
+/* --- Dropdown de idioma (mundito) --- */
 .main-title {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between; /* texto a la izq, mundito a la der */
   gap: 10px;
+  position: relative;
+}
+
+.lang-dropdown {
   position: relative;
 }
 
@@ -338,24 +342,29 @@ footer {
   display: none;
   position: absolute;
   right: 0;
-  top: 120%;
-  background: white;
-  border: 1px solid #ccc;
+  top: 110%;
+  background: #fff;
+  border: 1px solid #ddd;
   border-radius: 6px;
   list-style: none;
-  padding: 0;
+  padding: 4px 0;
   margin: 0;
-  z-index: 100;
+  min-width: 80px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  z-index: 200;
 }
 
 .lang-menu li {
-  padding: 6px 12px;
+  padding: 8px 12px;
   cursor: pointer;
+  font-size: 0.9rem;
+  color: #333;
+  transition: background 0.2s;
 }
 
 .lang-menu li:hover {
   background: #f17121;
-  color: white;
+  color: #fff;
 }
 
 
