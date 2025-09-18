@@ -1,4 +1,4 @@
-// ==================== Variables globales ====================
+// ==================== Variables globales ===================
 let todaysRecords = [];
 let tomorrowsRecords = [];
 let currentDataset = "today";
