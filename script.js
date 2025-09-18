@@ -8,6 +8,7 @@ const itemsPerPage = 15;
 let totalPages = 1;
 let autoPageInterval = null;
 let inactivityTimer = null;
+let currentLang = "en"; // idioma por defecto
 
 // ==================== Referencias DOM ====================
 const homeContainer      = document.getElementById('home-container');
@@ -21,6 +22,65 @@ const searchButton       = document.getElementById('search-button');
 const searchResult       = document.getElementById('search-result');
 const searchLegend       = document.getElementById('search-legend');
 const mainTitle          = document.getElementById('main-title');
+const langSelector       = document.getElementById('lang-selector');
+const searchTitle        = document.getElementById('search-title');
+const searchTransferText = document.getElementById('search-transfer-text');
+const adventureText      = document.getElementById('adventure-text');
+
+// ==================== Traducciones ====================
+const translations = {
+  en: {
+    todayTitle: "TODAY’S PICK-UP AIRPORT TRANSFERS",
+    tomorrowTitle: "TOMORROW’S PICK-UP AIRPORT TRANSFERS",
+    searchLegend: "If you have any questions about your pickup transfer time, please reach out to your Royalton Excursion Rep at the hospitality desk. You can also contact us easily via chat on the NexusTours App or by calling +52 998 251 6559. We're here to assist you!",
+    searchTitle: "Find my transfer",
+    resultTitle: "We got you, here are your transfer details",
+    bookingNo: "Booking No.",
+    flightNo: "Flight No.",
+    hotel: "Hotel",
+    pickup: "Pick-Up time",
+    back: "← Back",
+    searchPlaceholder: "Enter your booking number",
+    searchButton: "Search",
+    searchTransferBtn: "Search my booking number",
+    adventureBtn: "Find your next adventure",
+    errorText: "If you have any questions about your pickup transfer time, please reach out to your Royalton Excursion Rep at the hospitality desk. You can also contact us easily via chat on the NexusTours App or by calling +52 998 251 6559. We're here to assist you!"
+  },
+  es: {
+    todayTitle: "TRASLADOS DE AEROPUERTO DE HOY",
+    tomorrowTitle: "TRASLADOS DE AEROPUERTO DE MAÑANA",
+    searchLegend: "Si tienes alguna pregunta sobre tu horario de traslado, por favor acude a tu representante de Royalton en el lobby. También puedes contactarnos fácilmente vía chat en la App de NexusTours o llamando al +52 998 251 6559. ¡Estamos aquí para ayudarte!",
+    searchTitle: "Buscar mi traslado",
+    resultTitle: "Aquí están los detalles de tu traslado",
+    bookingNo: "Número de reserva",
+    flightNo: "Número de vuelo",
+    hotel: "Hotel",
+    pickup: "Hora de recogida",
+    back: "← Regresar",
+    searchPlaceholder: "Ingresa tu número de reserva",
+    searchButton: "Buscar",
+    searchTransferBtn: "Buscar mi número de reserva",
+    adventureBtn: "Encuentra tu próxima aventura",
+    errorText: "Si tienes alguna pregunta sobre tu horario de traslado, por favor acude a tu representante de Royalton en el lobby. También puedes contactarnos fácilmente vía chat en la App de NexusTours o llamando al +52 998 251 6559. ¡Estamos aquí para ayudarte!"
+  },
+  fr: {
+    todayTitle: "TRANSFERTS AÉROPORT D’AUJOURD’HUI",
+    tomorrowTitle: "TRANSFERTS AÉROPORT DE DEMAIN",
+    searchLegend: "Si vous avez des questions concernant votre transfert, veuillez contacter votre représentant Royalton à la réception. Vous pouvez également nous joindre facilement via le chat de l'application NexusTours ou en appelant le +52 998 251 6559. Nous sommes là pour vous aider !",
+    searchTitle: "Trouver mon transfert",
+    resultTitle: "Voici les détails de votre transfert",
+    bookingNo: "N° de réservation",
+    flightNo: "N° de vol",
+    hotel: "Hôtel",
+    pickup: "Heure de prise en charge",
+    back: "← Retour",
+    searchPlaceholder: "Entrez votre numéro de réservation",
+    searchButton: "Rechercher",
+    searchTransferBtn: "Rechercher mon numéro de réservation",
+    adventureBtn: "Trouvez votre prochaine aventure",
+    errorText: "Si vous avez des questions concernant votre transfert, veuillez contacter votre représentant Royalton à la réception. Vous pouvez également nous joindre facilement via le chat de l'application NexusTours ou en appelant le +52 998 251 6559. Nous sommes là pour vous aider !"
+  }
+};
 
 // ==================== Cargar ambos JSON ====================
 window.addEventListener('DOMContentLoaded', async () => {
@@ -43,6 +103,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     totalPages     = Math.max(1, Math.ceil(currentRecords.length / itemsPerPage));
 
     updateTitle();
+    updateStaticTexts();
     renderTable();
   } catch (error) {
     console.error('Error loading data:', error);
@@ -50,14 +111,23 @@ window.addEventListener('DOMContentLoaded', async () => {
   }
 });
 
-// ==================== Actualizar título ====================
+// ==================== Actualizar textos ====================
 function updateTitle() {
-  mainTitle.innerText = currentDataset === "today"
-    ? "TODAY’S PICK-UP AIRPORT TRANSFERS"
-    : "TOMORROW’S PICK-UP AIRPORT TRANSFERS";
+  mainTitle.childNodes[0].nodeValue = currentDataset === "today"
+    ? translations[currentLang].todayTitle + " "
+    : translations[currentLang].tomorrowTitle + " ";
 }
 
-// ==================== Renderizar tabla con paginación ====================
+function updateStaticTexts() {
+  searchLegend.innerText = translations[currentLang].searchLegend;
+  searchTitle.innerText  = translations[currentLang].searchTitle;
+  backHomeBtn.innerText  = translations[currentLang].back;
+  searchInput.placeholder = translations[currentLang].searchPlaceholder;
+  searchTransferText.innerText = translations[currentLang].searchTransferBtn;
+  adventureText.innerText      = translations[currentLang].adventureBtn;
+}
+
+// ==================== Renderizar tabla ====================
 function renderTable() {
   if (autoPageInterval) {
     clearInterval(autoPageInterval);
@@ -75,10 +145,10 @@ function renderTable() {
       <table>
         <thead>
           <tr>
-            <th>Booking No.</th>
-            <th>Flight No.</th>
-            <th>Hotel</th>
-            <th>Pick-Up time</th>
+            <th>${translations[currentLang].bookingNo}</th>
+            <th>${translations[currentLang].flightNo}</th>
+            <th>${translations[currentLang].hotel}</th>
+            <th>${translations[currentLang].pickup}</th>
           </tr>
         </thead>
         <tbody>
@@ -103,10 +173,10 @@ function renderTable() {
   `;
 
   tableContainer.innerHTML = html;
-  startAutoPagination(); // Siempre iniciar paginación automática
+  startAutoPagination();
 }
 
-// ==================== Auto-paginación con loop ====================
+// ==================== Auto-paginación ====================
 function startAutoPagination() {
   autoPageInterval = setInterval(() => {
     currentPage++;
@@ -122,7 +192,7 @@ function startAutoPagination() {
 // ==================== Navegación y búsqueda ====================
 searchTransferBtn.addEventListener('click', goToSearch);
 adventureBtn.addEventListener('click', () => {
-  alert('You clicked "Find your next adventure". Implement your logic here!');
+  alert(translations[currentLang].adventureBtn);
 });
 backHomeBtn.addEventListener('click', () => {
   searchResult.style.opacity = '0';
@@ -157,7 +227,6 @@ searchButton.addEventListener('click', () => {
   const query = searchInput.value.trim().toLowerCase();
   if (!query) return goToHome();
 
-  // Usamos filter() para traer todas las reservas cuyo id coincida con agency_ref buscado
   const matchesToday    = todaysRecords.filter(r => r.id.toLowerCase() === query);
   const matchesTomorrow = tomorrowsRecords.filter(r => r.id.toLowerCase() === query);
   const foundRecords    = [...matchesToday, ...matchesTomorrow];
@@ -165,17 +234,16 @@ searchButton.addEventListener('click', () => {
   inactivityTimer = setTimeout(goToHome, 20000);
 
   if (foundRecords.length > 0) {
-    // Construimos la tabla mostrando todas las reservas encontradas
     let resultHTML = `
       <div class="bktableqrresultados">
-        <p class="titulo_result"><strong>We got you, here are your transfer details</strong></p>
+        <p class="titulo_result"><strong>${translations[currentLang].resultTitle}</strong></p>
         <table class="transfer-result-table">
           <thead>
             <tr>
-              <th>Booking No.</th>
-              <th>Flight No.</th>
-              <th>Hotel</th>
-              <th>Pick-Up time</th>
+              <th>${translations[currentLang].bookingNo}</th>
+              <th>${translations[currentLang].flightNo}</th>
+              <th>${translations[currentLang].hotel}</th>
+              <th>${translations[currentLang].pickup}</th>
             </tr>
           </thead>
           <tbody>
@@ -197,17 +265,21 @@ searchButton.addEventListener('click', () => {
     `;
     searchResult.innerHTML = resultHTML;
   } else {
-    // Caso sin coincidencias
     searchResult.innerHTML = `
       <div class="bktableqr">
-        <p class="error-text">
-          If you have any questions about your pickup transfer time, please reach out to your Royalton Excursion Rep at the hospitality desk. You can also contact us easily via chat on the NexusTours App or by calling +52 998 251 6559<br>
-          We're here to assist you!
-        </p>
+        <p class="error-text">${translations[currentLang].errorText}</p>
         <div class="qr-container">
           <img src="https://raw.githubusercontent.com/gr-hub-projects/Display_Royalton_Punta_Cana/refs/heads/main/Logo_Dysp.png" alt="QR Code">
         </div>
       </div>
     `;
   }
+});
+
+// ==================== Selector de idioma ====================
+langSelector.addEventListener("change", (e) => {
+  currentLang = e.target.value;
+  updateTitle();
+  updateStaticTexts();
+  renderTable();
 });
