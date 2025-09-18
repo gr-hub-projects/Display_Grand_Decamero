@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <!-- CONTENEDOR HOME: Tabla con todos los registros -->
+  <!-- CONTENEDOR HOME -->
   <div id="home-container" class="home-container">
     <div class="top-buttons">
       <button id="search-transfer-btn" class="btn-secondary big-home-button">
@@ -22,18 +22,20 @@
       </button>
     </div>
 
-    <!-- Título en Home + botón idioma -->
+    <!-- Título en Home -->
     <h2 id="main-title" class="main-title">
       <span id="main-title-text">TODAY’S PICK-UP AIRPORT TRANSFERS</span>
-      <div class="lang-dropdown">
-        <button id="lang-button" class="lang-button">🌐</button>
-        <ul id="lang-menu" class="lang-menu">
-          <li data-lang="en">ENG</li>
-          <li data-lang="es">ESP</li>
-          <li data-lang="fr">FRA</li>
-        </ul>
-      </div>
     </h2>
+
+    <!-- Botón idioma separado del título -->
+    <div class="lang-dropdown">
+      <button id="lang-button" class="lang-button">🌐</button>
+      <ul id="lang-menu" class="lang-menu">
+        <li data-lang="en">ENG</li>
+        <li data-lang="es">ESP</li>
+        <li data-lang="fr">FRA</li>
+      </ul>
+    </div>
 
     <!-- Aquí se inyecta la tabla -->
     <div id="table-container" class="table-container"></div>
@@ -43,7 +45,7 @@
     </footer>
   </div>
 
-  <!-- CONTENEDOR SEARCH: Búsqueda por ID -->
+  <!-- CONTENEDOR SEARCH -->
   <div id="search-container" class="search-container">
     <button id="back-home-btn" class="btn-back">← Back</button>
     <h2 id="search-title">Find my transfer</h2>
