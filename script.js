@@ -205,7 +205,7 @@ searchButton.addEventListener('click', () => {
           We're here to assist you!
         </p>
         <div class="qr-container">
-          <img src="https://miguelgrhub.github.io/Dyspl/Qr.jpeg" alt="QR Code">
+          <img src="https://raw.githubusercontent.com/gr-hub-projects/Display_Royalton_Punta_Cana/refs/heads/main/Logo_Dysp.png" alt="QR Code">
         </div>
       </div>
     `;
