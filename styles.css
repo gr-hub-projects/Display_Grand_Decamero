@@ -305,6 +305,13 @@ footer {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   text-transform: uppercase;
 }
+.lang-selector {
+  margin-left: 10px;
+  padding: 4px 6px;
+  font-size: 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
 
 /*.result {
   background: transparent;
