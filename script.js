@@ -44,7 +44,7 @@ const translations = {
     searchPlaceholder: "Enter your booking number",
     searchTransferBtn: "Search my booking number",
     adventureBtn: "Find your next adventure",
-    errorText: "If you have any questions about your pickup transfer time, please reach out to your Royalton Excursion Rep at the hospitality desk. You can also contact us easily via chat on the NexusTours App or by calling +52 998 251 6559. We're here to assist you!"
+    errorText: "If you have any questions about your pickup transfer time, please reach out..."
   },
   es: {
     todayTitle: "TRASLADOS DE AEROPUERTO DE HOY",
@@ -60,7 +60,7 @@ const translations = {
     searchPlaceholder: "Ingresa tu número de reserva",
     searchTransferBtn: "Buscar mi número de reserva",
     adventureBtn: "Encuentra tu próxima aventura",
-    errorText: "Si tienes alguna pregunta sobre tu horario de traslado, por favor acude a tu representante de Royalton en el lobby. También puedes contactarnos fácilmente vía chat en la App de NexusTours o llamando al +52 998 251 6559. ¡Estamos aquí para ayudarte!"
+    errorText: "Si tienes alguna pregunta sobre tu horario de traslado..."
   },
   fr: {
     todayTitle: "TRANSFERTS AÉROPORT D’AUJOURD’HUI",
@@ -76,7 +76,7 @@ const translations = {
     searchPlaceholder: "Entrez votre numéro de réservation",
     searchTransferBtn: "Rechercher mon numéro de réservation",
     adventureBtn: "Trouvez votre prochaine aventure",
-    errorText: "Si vous avez des questions concernant votre transfert, veuillez contacter votre représentant Royalton à la réception. Vous pouvez également nous joindre facilement via le chat de l'application NexusTours ou en appelant le +52 998 251 6559. Nous sommes là pour vous aider !"
+    errorText: "Si vous avez des questions concernant votre transfert..."
   }
 };
 
@@ -87,9 +87,6 @@ window.addEventListener('DOMContentLoaded', async () => {
       fetch('data.json'),
       fetch('data_2.json')
     ]);
-    if (!todayResp.ok)    throw new Error(`Fetch failed for data.json: ${todayResp.status}`);
-    if (!tomorrowResp.ok) throw new Error(`Fetch failed for data_2.json: ${tomorrowResp.status}`);
-
     const todayData    = await todayResp.json();
     const tomorrowData = await tomorrowResp.json();
 
@@ -189,13 +186,8 @@ function startAutoPagination() {
 
 // ==================== Navegación y búsqueda ====================
 searchTransferBtn.addEventListener('click', goToSearch);
-adventureBtn.addEventListener('click', () => {
-  alert(translations[currentLang].adventureBtn);
-});
-backHomeBtn.addEventListener('click', () => {
-  searchResult.style.opacity = '0';
-  goToHome();
-});
+backHomeBtn.addEventListener('click', () => { goToHome(); });
+searchButton.addEventListener('click', doSearch);
 
 function goToSearch() {
   homeContainer.style.display   = 'none';
@@ -217,7 +209,7 @@ function goToHome() {
   renderTable();
 }
 
-searchButton.addEventListener('click', () => {
+function doSearch() {
   clearTimeout(inactivityTimer);
   searchLegend.style.display = 'none';
   searchResult.style.opacity = '1';
@@ -267,16 +259,16 @@ searchButton.addEventListener('click', () => {
       <div class="bktableqr">
         <p class="error-text">${translations[currentLang].errorText}</p>
         <div class="qr-container">
-          <img src="https://raw.githubusercontent.com/gr-hub-projects/Display_Royalton_Punta_Cana/refs/heads/main/Logo_Dysp.png" alt="QR Code">
+          <img src="https://miguelgrhub.github.io/Dyspl/Qr.jpeg" alt="QR Code">
         </div>
       </div>
     `;
   }
-});
+}
 
-// ==================== Botón idioma ====================
+// ==================== Idioma ====================
 langButton.addEventListener("click", (e) => {
-  e.stopPropagation(); // evitar cierre inmediato
+  e.stopPropagation();
   langMenu.style.display = (langMenu.style.display === "block") ? "none" : "block";
 });
 
@@ -290,9 +282,7 @@ langMenu.querySelectorAll("li").forEach(li => {
   });
 });
 
-// Cerrar menú si clicas afuera
-document.addEventListener("click", (e) => {
-  if (!langMenu.contains(e.target) && !langButton.contains(e.target)) {
-    langMenu.style.display = "none";
-  }
+// Cierra el menú si clicas fuera
+document.addEventListener("click", () => {
+  langMenu.style.display = "none";
 });
