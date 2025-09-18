@@ -15,18 +15,16 @@ const homeContainer      = document.getElementById('home-container');
 const searchContainer    = document.getElementById('search-container');
 const tableContainer     = document.getElementById('table-container');
 const searchTransferBtn  = document.getElementById('search-transfer-btn');
-const adventureBtn       = document.getElementById('adventure-btn');
 const backHomeBtn        = document.getElementById('back-home-btn');
 const searchInput        = document.getElementById('search-input');
 const searchButton       = document.getElementById('search-button');
 const searchResult       = document.getElementById('search-result');
 const searchLegend       = document.getElementById('search-legend');
-const mainTitleText      = document.getElementById('main-title-text');
-const langButton         = document.getElementById('lang-button');
-const langMenu           = document.getElementById('lang-menu');
+const mainTitle          = document.getElementById('main-title');
 const searchTitle        = document.getElementById('search-title');
 const searchTransferText = document.getElementById('search-transfer-text');
-const adventureText      = document.getElementById('adventure-text');
+const langButton         = document.getElementById('lang-button');
+const langMenu           = document.getElementById('lang-menu');
 
 // ==================== Traducciones ====================
 const translations = {
@@ -43,8 +41,7 @@ const translations = {
     back: "← Back",
     searchPlaceholder: "Enter your booking number",
     searchTransferBtn: "Search my booking number",
-    adventureBtn: "Find your next adventure",
-    errorText: "If you have any questions about your pickup transfer time, please reach out..."
+    errorText: "If you have any questions about your pickup transfer time, please reach out to your Royalton Excursion Rep at the hospitality desk. You can also contact us easily via chat on the NexusTours App or by calling +52 998 251 6559. We're here to assist you!"
   },
   es: {
     todayTitle: "TRASLADOS DE AEROPUERTO DE HOY",
@@ -59,8 +56,7 @@ const translations = {
     back: "← Regresar",
     searchPlaceholder: "Ingresa tu número de reserva",
     searchTransferBtn: "Buscar mi número de reserva",
-    adventureBtn: "Encuentra tu próxima aventura",
-    errorText: "Si tienes alguna pregunta sobre tu horario de traslado..."
+    errorText: "Si tienes alguna pregunta sobre tu horario de traslado, por favor acude a tu representante de Royalton en el lobby. También puedes contactarnos fácilmente vía chat en la App de NexusTours o llamando al +52 998 251 6559. ¡Estamos aquí para ayudarte!"
   },
   fr: {
     todayTitle: "TRANSFERTS AÉROPORT D’AUJOURD’HUI",
@@ -75,18 +71,20 @@ const translations = {
     back: "← Retour",
     searchPlaceholder: "Entrez votre numéro de réservation",
     searchTransferBtn: "Rechercher mon numéro de réservation",
-    adventureBtn: "Trouvez votre prochaine aventure",
-    errorText: "Si vous avez des questions concernant votre transfert..."
+    errorText: "Si vous avez des questions concernant votre transfert, veuillez contacter votre représentant Royalton à la réception. Vous pouvez également nous joindre facilement via le chat de l'application NexusTours ou en appelant le +52 998 251 6559. Nous sommes là pour vous aider !"
   }
 };
 
-// ==================== Cargar ambos JSON ====================
+// ==================== Cargar JSON ====================
 window.addEventListener('DOMContentLoaded', async () => {
   try {
     const [todayResp, tomorrowResp] = await Promise.all([
       fetch('data.json'),
       fetch('data_2.json')
     ]);
+    if (!todayResp.ok)    throw new Error(`Fetch failed for data.json: ${todayResp.status}`);
+    if (!tomorrowResp.ok) throw new Error(`Fetch failed for data_2.json: ${tomorrowResp.status}`);
+
     const todayData    = await todayResp.json();
     const tomorrowData = await tomorrowResp.json();
 
@@ -97,8 +95,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     currentRecords = todaysRecords;
     totalPages     = Math.max(1, Math.ceil(currentRecords.length / itemsPerPage));
 
-    updateTitle();
-    updateStaticTexts();
+    updateTexts();
     renderTable();
   } catch (error) {
     console.error('Error loading data:', error);
@@ -106,20 +103,14 @@ window.addEventListener('DOMContentLoaded', async () => {
   }
 });
 
-// ==================== Actualizar textos ====================
-function updateTitle() {
-  mainTitleText.innerText = currentDataset === "today"
-    ? translations[currentLang].todayTitle
-    : translations[currentLang].tomorrowTitle;
-}
-
-function updateStaticTexts() {
-  searchLegend.innerText = translations[currentLang].searchLegend;
-  searchTitle.innerText  = translations[currentLang].searchTitle;
-  backHomeBtn.innerText  = translations[currentLang].back;
-  searchInput.placeholder = translations[currentLang].searchPlaceholder;
+// ==================== Funciones idioma ====================
+function updateTexts() {
+  mainTitle.innerText      = currentDataset === "today" ? translations[currentLang].todayTitle : translations[currentLang].tomorrowTitle;
+  searchLegend.innerText   = translations[currentLang].searchLegend;
+  searchTitle.innerText    = translations[currentLang].searchTitle;
+  backHomeBtn.innerText    = translations[currentLang].back;
+  searchInput.placeholder  = translations[currentLang].searchPlaceholder;
   searchTransferText.innerText = translations[currentLang].searchTransferBtn;
-  adventureText.innerText      = translations[currentLang].adventureBtn;
 }
 
 // ==================== Renderizar tabla ====================
@@ -177,7 +168,7 @@ function startAutoPagination() {
     currentPage++;
     if (currentPage > totalPages) {
       currentDataset = currentDataset === "today" ? "tomorrow" : "today";
-      updateTitle();
+      updateTexts();
       currentPage = 1;
     }
     renderTable();
@@ -186,8 +177,10 @@ function startAutoPagination() {
 
 // ==================== Navegación y búsqueda ====================
 searchTransferBtn.addEventListener('click', goToSearch);
-backHomeBtn.addEventListener('click', () => { goToHome(); });
-searchButton.addEventListener('click', doSearch);
+backHomeBtn.addEventListener('click', () => {
+  searchResult.style.opacity = '0';
+  goToHome();
+});
 
 function goToSearch() {
   homeContainer.style.display   = 'none';
@@ -209,7 +202,7 @@ function goToHome() {
   renderTable();
 }
 
-function doSearch() {
+searchButton.addEventListener('click', () => {
   clearTimeout(inactivityTimer);
   searchLegend.style.display = 'none';
   searchResult.style.opacity = '1';
@@ -259,16 +252,15 @@ function doSearch() {
       <div class="bktableqr">
         <p class="error-text">${translations[currentLang].errorText}</p>
         <div class="qr-container">
-          <img src="https://miguelgrhub.github.io/Dyspl/Qr.jpeg" alt="QR Code">
+          <img src="https://miguelgrhub.github.io/Dyspl/Logo_Dysp.png" alt="QR Code">
         </div>
       </div>
     `;
   }
-}
+});
 
-// ==================== Idioma ====================
-langButton.addEventListener("click", (e) => {
-  e.stopPropagation();
+// ==================== Botón idioma ====================
+langButton.addEventListener("click", () => {
   langMenu.style.display = (langMenu.style.display === "block") ? "none" : "block";
 });
 
@@ -276,13 +268,7 @@ langMenu.querySelectorAll("li").forEach(li => {
   li.addEventListener("click", (e) => {
     currentLang = e.target.dataset.lang;
     langMenu.style.display = "none";
-    updateTitle();
-    updateStaticTexts();
+    updateTexts();
     renderTable();
   });
-});
-
-// Cierra el menú si clicas fuera
-document.addEventListener("click", () => {
-  langMenu.style.display = "none";
 });
