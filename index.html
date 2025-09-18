@@ -23,8 +23,15 @@
       </button>
     </div>
 
-    <!-- Título en Home -->
-    <h2 id="main-title" class="main-title">Today’s pick-up airport transfers</h2>
+    <!-- Título en Home + selector idioma -->
+    <h2 id="main-title" class="main-title">
+      TODAY’S PICK-UP AIRPORT TRANSFERS
+      <select id="lang-selector" class="lang-selector">
+        <option value="en">ENG</option>
+        <option value="es">ESP</option>
+        <option value="fr">FRA</option>
+      </select>
+    </h2>
 
     <!-- Aquí se inyecta la tabla y la paginación (auto) vía JavaScript -->
     <div id="table-container" class="table-container"></div>
@@ -55,7 +62,7 @@
     <!-- Leyenda debajo del botón (visible al inicio) -->
     <p id="search-legend" class="search-legend">
       If you have any questions about your pickup transfer time, please reach out to your Royalton Excursion Rep at the hospitality desk. You can also contact us easily via chat on the NexusTours App or by calling +52 998 251 6559
-We're here to assist you!
+      We're here to assist you!
     </p>
 
     <div id="search-result" class="table-container result"></div>
