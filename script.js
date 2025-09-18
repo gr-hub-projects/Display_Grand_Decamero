@@ -1,4 +1,4 @@
-// ==================== Variables globales ===================
+// ==================== Variables globales ====================
 let todaysRecords = [];
 let tomorrowsRecords = [];
 let currentDataset = "today";
@@ -21,8 +21,9 @@ const searchInput        = document.getElementById('search-input');
 const searchButton       = document.getElementById('search-button');
 const searchResult       = document.getElementById('search-result');
 const searchLegend       = document.getElementById('search-legend');
-const mainTitle          = document.getElementById('main-title');
-const langSelector       = document.getElementById('lang-selector');
+const mainTitleText      = document.getElementById('main-title-text');
+const langButton         = document.getElementById('lang-button');
+const langMenu           = document.getElementById('lang-menu');
 const searchTitle        = document.getElementById('search-title');
 const searchTransferText = document.getElementById('search-transfer-text');
 const adventureText      = document.getElementById('adventure-text');
@@ -41,7 +42,6 @@ const translations = {
     pickup: "Pick-Up time",
     back: "← Back",
     searchPlaceholder: "Enter your booking number",
-    searchButton: "Search",
     searchTransferBtn: "Search my booking number",
     adventureBtn: "Find your next adventure",
     errorText: "If you have any questions about your pickup transfer time, please reach out to your Royalton Excursion Rep at the hospitality desk. You can also contact us easily via chat on the NexusTours App or by calling +52 998 251 6559. We're here to assist you!"
@@ -58,7 +58,6 @@ const translations = {
     pickup: "Hora de recogida",
     back: "← Regresar",
     searchPlaceholder: "Ingresa tu número de reserva",
-    searchButton: "Buscar",
     searchTransferBtn: "Buscar mi número de reserva",
     adventureBtn: "Encuentra tu próxima aventura",
     errorText: "Si tienes alguna pregunta sobre tu horario de traslado, por favor acude a tu representante de Royalton en el lobby. También puedes contactarnos fácilmente vía chat en la App de NexusTours o llamando al +52 998 251 6559. ¡Estamos aquí para ayudarte!"
@@ -75,7 +74,6 @@ const translations = {
     pickup: "Heure de prise en charge",
     back: "← Retour",
     searchPlaceholder: "Entrez votre numéro de réservation",
-    searchButton: "Rechercher",
     searchTransferBtn: "Rechercher mon numéro de réservation",
     adventureBtn: "Trouvez votre prochaine aventure",
     errorText: "Si vous avez des questions concernant votre transfert, veuillez contacter votre représentant Royalton à la réception. Vous pouvez également nous joindre facilement via le chat de l'application NexusTours ou en appelant le +52 998 251 6559. Nous sommes là pour vous aider !"
@@ -113,9 +111,9 @@ window.addEventListener('DOMContentLoaded', async () => {
 
 // ==================== Actualizar textos ====================
 function updateTitle() {
-  mainTitle.childNodes[0].nodeValue = currentDataset === "today"
-    ? translations[currentLang].todayTitle + " "
-    : translations[currentLang].tomorrowTitle + " ";
+  mainTitleText.innerText = currentDataset === "today"
+    ? translations[currentLang].todayTitle
+    : translations[currentLang].tomorrowTitle;
 }
 
 function updateStaticTexts() {
@@ -276,10 +274,17 @@ searchButton.addEventListener('click', () => {
   }
 });
 
-// ==================== Selector de idioma ====================
-langSelector.addEventListener("change", (e) => {
-  currentLang = e.target.value;
-  updateTitle();
-  updateStaticTexts();
-  renderTable();
+// ==================== Botón idioma ====================
+langButton.addEventListener("click", () => {
+  langMenu.style.display = (langMenu.style.display === "block") ? "none" : "block";
+});
+
+langMenu.querySelectorAll("li").forEach(li => {
+  li.addEventListener("click", (e) => {
+    currentLang = e.target.dataset.lang;
+    langMenu.style.display = "none";
+    updateTitle();
+    updateStaticTexts();
+    renderTable();
+  });
 });
