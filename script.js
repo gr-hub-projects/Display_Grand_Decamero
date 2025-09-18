@@ -275,7 +275,8 @@ searchButton.addEventListener('click', () => {
 });
 
 // ==================== Botón idioma ====================
-langButton.addEventListener("click", () => {
+langButton.addEventListener("click", (e) => {
+  e.stopPropagation(); // evitar cierre inmediato
   langMenu.style.display = (langMenu.style.display === "block") ? "none" : "block";
 });
 
@@ -287,4 +288,11 @@ langMenu.querySelectorAll("li").forEach(li => {
     updateStaticTexts();
     renderTable();
   });
+});
+
+// Cerrar menú si clicas afuera
+document.addEventListener("click", (e) => {
+  if (!langMenu.contains(e.target) && !langButton.contains(e.target)) {
+    langMenu.style.display = "none";
+  }
 });
