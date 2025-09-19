@@ -333,27 +333,35 @@ footer {
 /* Contenedor título + idioma */
 .title-lang-wrapper {
   display: flex;
-  justify-content: center;
+  justify-content: space-between; /* título a la izquierda, botones a la derecha */
   align-items: center;
-  gap: 12px;
   margin-bottom: 20px;
+  max-width: 944px; /* igual que la tabla */
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 10px;
 }
 
 /* Botones de idioma */
 .language-buttons {
   display: flex;
-  gap: 6px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  overflow: hidden;
 }
 
 .lang-btn {
-  border: 1px solid #ccc;
   background-color: #eee;
   color: #333;
-  padding: 5px 10px;
-  border-radius: 6px;
-  font-size: 0.9rem;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  border: none;
   cursor: pointer;
   transition: all 0.2s ease;
+}
+
+.lang-btn:not(:last-child) {
+  border-right: 1px solid #ccc;
 }
 
 .lang-btn:hover {
@@ -364,7 +372,6 @@ footer {
 .lang-btn.active {
   background-color: #f17121;
   color: #fff;
-  border-color: #f17121;
 }
 /*.result {
   background: transparent;
