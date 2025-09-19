@@ -26,7 +26,8 @@ const translations = {
     th_booking: "Booking No.",
     th_flight: "Flight No.",
     th_hotel: "Hotel",
-    th_pickup: "Pick-Up time"
+    th_pickup: "Pick-Up time",
+    page: "Page"
   },
   es: {
     title_today: "Traslados al aeropuerto de hoy",
@@ -42,7 +43,8 @@ const translations = {
     th_booking: "N° de reserva",
     th_flight: "N° de vuelo",
     th_hotel: "Hotel",
-    th_pickup: "Hora de recogida"
+    th_pickup: "Hora de recogida",
+    page: "Página"
   },
   fr: {
     title_today: "Transferts aéroport d’aujourd’hui",
@@ -58,7 +60,8 @@ const translations = {
     th_booking: "N° de réservation",
     th_flight: "N° de vol",
     th_hotel: "Hôtel",
-    th_pickup: "Heure de prise en charge"
+    th_pickup: "Heure de prise en charge",
+    page: "Page"
   }
 };
 
@@ -74,7 +77,7 @@ const searchButton    = document.getElementById('search-button');
 const searchResult    = document.getElementById('search-result');
 const searchLegend    = document.getElementById('search-legend');
 const mainTitle       = document.getElementById('main-title');
-const langSelect      = document.getElementById('language-select');
+const langButtons     = document.querySelectorAll('.lang-btn');
 
 // ==================== Cargar JSON ====================
 window.addEventListener('DOMContentLoaded', async () => {
@@ -100,11 +103,15 @@ window.addEventListener('DOMContentLoaded', async () => {
   }
 });
 
-// ==================== Cambio de idioma ====================
-langSelect.addEventListener("change", () => {
-  currentLang = langSelect.value;
-  updateTexts();
-  renderTable();
+// ==================== Cambio de idioma con botones ====================
+langButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    currentLang = btn.dataset.lang;
+    langButtons.forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    updateTexts();
+    renderTable();
+  });
 });
 
 function updateTexts() {
@@ -163,7 +170,7 @@ function renderTable() {
         </tbody>
       </table>
     </div>
-    <div class="auto-page-info">Page ${currentPage} of ${totalPages}</div>
+    <div class="auto-page-info">${t.page} ${currentPage} / ${totalPages}</div>
   `;
 
   tableContainer.innerHTML = html;
