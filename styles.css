@@ -330,6 +330,42 @@ footer {
   border-radius: 4px;
   border: 1px solid #ccc;
 }
+/* Contenedor título + idioma */
+.title-lang-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+/* Botones de idioma */
+.language-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.lang-btn {
+  border: 1px solid #ccc;
+  background-color: #eee;
+  color: #333;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.lang-btn:hover {
+  background-color: #f17121;
+  color: #fff;
+}
+
+.lang-btn.active {
+  background-color: #f17121;
+  color: #fff;
+  border-color: #f17121;
+}
 /*.result {
   background: transparent;
     border: none;
