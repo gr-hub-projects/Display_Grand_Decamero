@@ -1,7 +1,16 @@
 {
   "templates": {
     "type": "JSON",
-    "content": [],
+    "content": [
+      {
+        "id": "71-6242513",
+        "Flight": "AM339",
+        "PickupDate": "2025-09-29",
+        "PickupTime": "17:05",
+        "HotelName": "Hotel Royal Decameron Bucerias Nayarit",
+        "HotelNumber": 16763
+      }
+    ],
     "source": {
       "data_source": "Google Sheets (Private)",
       "update_frequency": "Automated"
